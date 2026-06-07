@@ -1,42 +1,39 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
 import { MODULES, calcScores, getRecommendedIndex } from './quizData'
 
 const COURSE_URL = 'https://course.brockjohn.com/'
 
-export default function Results() {
-  const [scores, setScores] = useState<number[]>(Array(7).fill(0))
-  const [recIdx, setRecIdx] = useState(0)
-  const [ready, setReady] = useState(false)
+// ─── Inner component (uses useSearchParams) ───────────────────────────────────
 
-  useEffect(() => {
-    try {
-      const raw = sessionStorage.getItem('fbo_answers')
-      const answers = raw ? JSON.parse(raw) : {}
-      const s = calcScores(answers)
-      setScores(s)
-      setRecIdx(getRecommendedIndex(s))
-    } catch {
-      // No answers — show default (M01)
-    }
-    setReady(true)
-  }, [])
+function ResultsInner() {
+  const params = useSearchParams()
 
+  // Parse answers from URL: ?q1=0&q2=2&q3=1 …
+  const answers: Record<string, number> = {}
+  params.forEach((val, key) => {
+    if (key.startsWith('q')) answers[key] = Number(val)
+  })
+
+  const scores   = calcScores(answers)
+  const recIdx   = getRecommendedIndex(scores)
   const maxScore = Math.max(...scores, 1)
-
-  if (!ready) return null
 
   return (
     <div className="min-h-screen bg-warm font-jost">
 
-      {/* ── Nav ───────────────────────────────────────────────── */}
+      {/* ── Nav ───────────────────────────────────────────── */}
       <nav className="sticky top-0 z-50 bg-warm border-b border-[rgba(201,169,110,0.2)] px-6 h-16 flex items-center justify-between">
         <span className="font-playfair text-[16px] text-amber">
           Brock<em className="italic text-gold">John</em>
         </span>
         <div className="flex items-center gap-4">
-          <a href="/quiz" className="text-[11px] tracking-[0.14em] uppercase text-[rgba(107,76,42,0.4)] hover:text-amber transition-colors">
+          <a
+            href="/quiz"
+            className="text-[11px] tracking-[0.14em] uppercase text-[rgba(107,76,42,0.4)] hover:text-amber transition-colors"
+          >
             Retake quiz
           </a>
           <a
@@ -48,7 +45,7 @@ export default function Results() {
         </div>
       </nav>
 
-      {/* ── Hero ─────────────────────────────────────────────── */}
+      {/* ── Hero ─────────────────────────────────────────── */}
       <section className="bg-warm px-6 pt-14 pb-12 text-center relative overflow-hidden">
         <div
           className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[340px] pointer-events-none"
@@ -84,14 +81,14 @@ export default function Results() {
         </div>
       </section>
 
-      {/* ── Proof bar ────────────────────────────────────────── */}
+      {/* ── Proof bar ─────────────────────────────────────── */}
       <div className="bg-[#EDE4C8] border-y border-[rgba(201,169,110,0.3)] px-6 py-4">
         <div className="flex items-center justify-center max-w-2xl mx-auto">
           {[
             { val: '2,400+', label: 'Women Enrolled' },
-            { val: '7',      label: 'Deep Modules' },
+            { val: '7',      label: 'Deep Modules'   },
             { val: '★ 4.9',  label: 'Student Rating' },
-            { val: '35 min', label: 'Core Practice' },
+            { val: '35 min', label: 'Core Practice'  },
           ].map((s, i, arr) => (
             <div key={s.label} className="flex items-center">
               <div className="flex flex-col items-center px-4 py-1">
@@ -104,19 +101,17 @@ export default function Results() {
         </div>
       </div>
 
-      {/* ── Your Recommended Module ───────────────────────────── */}
+      {/* ── Recommended module ────────────────────────────── */}
       <section className="bg-soft px-6 py-14 border-t border-[rgba(201,169,110,0.15)]">
         <div className="max-w-xl mx-auto">
-          <p className="text-[10px] tracking-[0.3em] uppercase text-gold font-medium mb-3">
-            Your Results
-          </p>
+          <p className="text-[10px] tracking-[0.3em] uppercase text-gold font-medium mb-3">Your Results</p>
           <h2 className="font-playfair text-[clamp(26px,4vw,38px)] font-bold text-brown leading-[1.1] mb-8">
             Your Recommended <em className="italic text-amber">Starting Module</em>
           </h2>
 
-          {/* Recommended callout */}
+          {/* Callout */}
           <div className="border-[1.5px] border-gold bg-[rgba(201,169,110,0.07)] rounded-2xl p-5 mb-6 flex items-start gap-4">
-            <div className="w-11 h-11 bg-gold rounded-xl flex items-center justify-center flex-shrink-0 font-playfair font-bold text-brown text-sm">
+            <div className="w-11 h-11 bg-gold rounded-xl flex items-center justify-center flex-shrink-0 font-bold text-brown text-sm">
               ✦
             </div>
             <div>
@@ -135,7 +130,7 @@ export default function Results() {
           {/* All modules with score bars */}
           <div className="flex flex-col gap-2">
             {MODULES.map((m, i) => {
-              const isRec = i === recIdx
+              const isRec  = i === recIdx
               const barPct = Math.round((scores[i] / maxScore) * 100)
               return (
                 <div
@@ -156,7 +151,7 @@ export default function Results() {
                     </span>
                     <div className="h-[3px] bg-[rgba(201,169,110,0.15)] rounded-full mt-1.5">
                       <div
-                        className={`h-[3px] rounded-full transition-all duration-700 ${isRec ? 'bg-gold' : 'bg-[rgba(201,169,110,0.35)]'}`}
+                        className={`h-[3px] rounded-full ${isRec ? 'bg-gold' : 'bg-[rgba(201,169,110,0.35)]'}`}
                         style={{ width: `${barPct}%` }}
                       />
                     </div>
@@ -174,7 +169,7 @@ export default function Results() {
         </div>
       </section>
 
-      {/* ── Promise ──────────────────────────────────────────── */}
+      {/* ── Promise ───────────────────────────────────────── */}
       <section className="bg-warm px-6 py-14 border-t border-[rgba(201,169,110,0.15)]">
         <div className="max-w-xl mx-auto">
           <p className="text-[10px] tracking-[0.3em] uppercase text-gold font-medium mb-3">The Promise</p>
@@ -191,9 +186,9 @@ export default function Results() {
             breath. We arrive in full-body sensation that was always yours to receive.
           </p>
           {[
-            { icon: '🌿', title: 'Somatic Body Practices',   body: 'Guided movement and breath that speaks directly to your nervous system — bypassing the thinking mind entirely.' },
-            { icon: '🎧', title: 'Audio & Video Guidance',    body: "Practice in bed, in the bath, wherever you feel most at home. Brock's voice holds the container." },
-            { icon: '✦',  title: 'No Performance Required',  body: 'There is no right orgasm here. No target to hit. Only sensation, breath, and the slow return to yourself.' },
+            { icon: '🌿', title: 'Somatic Body Practices',  body: 'Guided movement and breath that speaks directly to your nervous system — bypassing the thinking mind entirely.' },
+            { icon: '🎧', title: 'Audio & Video Guidance',   body: "Practice in bed, in the bath, wherever you feel most at home. Brock's voice holds the container." },
+            { icon: '✦',  title: 'No Performance Required', body: 'There is no right orgasm here. No target to hit. Only sensation, breath, and the slow return to yourself.' },
           ].map(p => (
             <div key={p.title} className="flex items-start gap-4 p-5 bg-soft border border-[rgba(201,169,110,0.2)] rounded-xl mb-3">
               <div className="w-9 h-9 rounded-full bg-[rgba(201,169,110,0.1)] border border-[rgba(201,169,110,0.3)] flex items-center justify-center text-[15px] flex-shrink-0 mt-0.5">
@@ -208,21 +203,20 @@ export default function Results() {
         </div>
       </section>
 
-      {/* ── 35-Day Plan ──────────────────────────────────────── */}
+      {/* ── 35-Day Plan ───────────────────────────────────── */}
       <section className="bg-brown px-6 py-14 text-center">
         <p className="text-[10px] tracking-[0.3em] uppercase text-[rgba(201,169,110,0.55)] mb-3">Your Journey</p>
         <h2 className="font-playfair text-[clamp(26px,4vw,40px)] font-bold text-cream leading-[1.1] mb-3">
-          35 Days to Your{' '}
-          <em className="italic text-gold">Full Body Awakening</em>
+          35 Days to Your <em className="italic text-gold">Full Body Awakening</em>
         </h2>
         <p className="font-cormorant text-[18px] italic text-[rgba(245,238,216,0.6)] mb-10">
           7 modules — built to move at your body's pace.
         </p>
         <div className="flex flex-col gap-3 max-w-xl mx-auto mb-8">
           {[
-            { range: 'Days 1–7 · Foundation',   title: 'Arriving in Safety',         items: ['Somatic grounding practices', 'Nervous system safety first', 'Breath as your anchor', 'Body mapping intro'] },
-            { range: 'Days 8–21 · Expansion',   title: 'Opening the Pleasure Current', items: ['Yoni awakening practices', 'Moving orgasmic energy', 'Full breath portals', 'Internal landscape mapping'] },
-            { range: 'Days 22–35 · Activation', title: 'Full Body Integration',      items: ['Complete FBO activation', 'Whole-body orgasmic capacity', 'Self-led practice ritual', 'Level 2 pathway opens'] },
+            { range: 'Days 1–7 · Foundation',   title: 'Arriving in Safety',          items: ['Somatic grounding practices','Nervous system safety first','Breath as your anchor','Body mapping intro'] },
+            { range: 'Days 8–21 · Expansion',   title: 'Opening the Pleasure Current', items: ['Yoni awakening practices','Moving orgasmic energy','Full breath portals','Internal landscape mapping'] },
+            { range: 'Days 22–35 · Activation', title: 'Full Body Integration',       items: ['Complete FBO activation','Whole-body orgasmic capacity','Self-led practice ritual','Level 2 pathway opens'] },
           ].map(s => (
             <div key={s.title} className="bg-[rgba(245,238,216,0.04)] border border-[rgba(201,169,110,0.1)] rounded-xl p-5 text-left relative overflow-hidden">
               <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: 'rgba(201,169,110,0.45)' }} />
@@ -238,15 +232,12 @@ export default function Results() {
             </div>
           ))}
         </div>
-        <a
-          href={COURSE_URL}
-          className="inline-block py-4 px-10 bg-gold text-brown rounded-xl font-jost text-[12px] font-semibold tracking-[0.2em] uppercase hover:opacity-88 transition-opacity"
-        >
+        <a href={COURSE_URL} className="inline-block py-4 px-10 bg-gold text-brown rounded-xl font-jost text-[12px] font-semibold tracking-[0.2em] uppercase hover:opacity-88 transition-opacity">
           Begin the Journey
         </a>
       </section>
 
-      {/* ── Testimonials ────────────────────────────────────── */}
+      {/* ── Testimonials ──────────────────────────────────── */}
       <section className="bg-soft px-6 py-14">
         <div className="max-w-xl mx-auto">
           <p className="text-[10px] tracking-[0.3em] uppercase text-gold font-medium mb-3">Student Voices</p>
@@ -255,59 +246,45 @@ export default function Results() {
           </h2>
           <div className="flex flex-col gap-3">
             {[
-              { featured: true,  quote: "By Module 3 I was weeping — not from sadness, but from finally feeling myself. I had no idea my body held this. The FBO program changed how I live inside my body every single day.", name: 'Maya R.', tag: 'Level 1 Graduate · Atlanta, GA' },
-              { featured: false, quote: "Brock's presence makes this feel completely safe. I went from shut down to fully alive.", name: 'Danielle K.', tag: 'Sacred Circle Member' },
-              { featured: false, quote: "I've done therapy, retreats, workshops. Nothing reached what this 35-minute practice did in one session.", name: 'Simone T.', tag: 'Level 2 Member' },
-              { featured: false, quote: "Worth more than any retreat at ten times the price. This is the real thing.", name: 'Camille F.', tag: 'Sacred Circle' },
+              { featured: true,  quote: "By Module 3 I was weeping — not from sadness, but from finally feeling myself. I had no idea my body held this. The FBO program changed how I live inside my body every single day.", name: 'Maya R.',    tag: 'Level 1 Graduate · Atlanta, GA' },
+              { featured: false, quote: "Brock's presence makes this feel completely safe. I went from shut down to fully alive.",                                                                                              name: 'Danielle K.', tag: 'Sacred Circle Member' },
+              { featured: false, quote: "I've done therapy, retreats, workshops. Nothing reached what this 35-minute practice did in one session.",                                                                             name: 'Simone T.',   tag: 'Level 2 Member' },
+              { featured: false, quote: "Worth more than any retreat at ten times the price. This is the real thing.",                                                                                                         name: 'Camille F.',  tag: 'Sacred Circle' },
             ].map((r, i) => (
               <div key={i} className={`p-6 border rounded-xl relative overflow-hidden ${r.featured ? 'bg-brown border-brown' : 'bg-white border-[rgba(201,169,110,0.2)]'}`}>
                 <span className={`absolute top-3 right-5 font-playfair text-[60px] italic leading-none ${r.featured ? 'text-[rgba(201,169,110,0.06)]' : 'text-[rgba(201,169,110,0.08)]'}`}>"</span>
                 <div className="text-gold tracking-[4px] text-[12px] mb-3">★★★★★</div>
-                <p className={`font-cormorant text-[17px] italic leading-[1.65] mb-4 ${r.featured ? 'text-[rgba(245,238,216,0.88)]' : 'text-brown'}`}>
-                  "{r.quote}"
-                </p>
-                <p className={`text-[11px] tracking-[0.15em] uppercase ${r.featured ? 'text-[rgba(201,169,110,0.5)]' : 'text-[rgba(107,76,42,0.5)]'}`}>
-                  — {r.name} · {r.tag}
-                </p>
+                <p className={`font-cormorant text-[17px] italic leading-[1.65] mb-4 ${r.featured ? 'text-[rgba(245,238,216,0.88)]' : 'text-brown'}`}>"{r.quote}"</p>
+                <p className={`text-[11px] tracking-[0.15em] uppercase ${r.featured ? 'text-[rgba(201,169,110,0.5)]' : 'text-[rgba(107,76,42,0.5)]'}`}>— {r.name} · {r.tag}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── Pricing ──────────────────────────────────────────── */}
+      {/* ── Pricing ───────────────────────────────────────── */}
       <section id="pricing" className="bg-warm px-6 py-14 text-center">
         <p className="text-[10px] tracking-[0.3em] uppercase text-gold font-medium mb-3">Begin Today</p>
         <h2 className="font-playfair text-[clamp(26px,4vw,38px)] font-bold text-brown leading-[1.1] mb-3">
           Choose Your <em className="italic text-amber">Path In</em>
         </h2>
-        <p className="font-cormorant text-[18px] italic text-amber opacity-78 mb-8">
-          Both levels grant lifetime access.
-        </p>
+        <p className="font-cormorant text-[18px] italic text-amber opacity-78 mb-8">Both levels grant lifetime access.</p>
         <div className="flex flex-col gap-4 max-w-sm mx-auto mb-6">
-          {/* Level 1 */}
           <div className="border border-[rgba(201,169,110,0.3)] rounded-2xl p-6 text-left">
             <p className="text-[10px] tracking-[0.2em] uppercase text-amber opacity-65 mb-2">Level 1 · Complete Program</p>
             <h3 className="font-playfair text-[22px] font-bold text-brown mb-2">Full Body Orgasmic</h3>
-            <div className="flex items-baseline gap-1 mb-1">
-              <span className="font-playfair text-[38px] font-bold text-brown">$197</span>
-            </div>
+            <p className="font-playfair text-[38px] font-bold text-brown mb-1">$197</p>
             <p className="text-[12px] text-[rgba(107,76,42,0.5)] mb-5">One-time · Lifetime access</p>
             <div className="h-px bg-[rgba(201,169,110,0.2)] mb-5" />
             <ul className="flex flex-col gap-2.5 mb-6">
-              {['All 7 somatic activation modules', '35-minute core activation practice', 'Audio + video guidance by Brock', 'Student onboarding & support', 'Lifetime access — return anytime'].map(f => (
+              {['All 7 somatic activation modules','35-minute core activation practice','Audio + video guidance by Brock','Student onboarding & support','Lifetime access — return anytime'].map(f => (
                 <li key={f} className="text-[13px] text-[rgba(107,76,42,0.75)] pl-4 relative before:content-['✦'] before:absolute before:left-0 before:text-gold before:text-[9px] before:top-1">{f}</li>
               ))}
             </ul>
-            <a href={COURSE_URL} className="block text-center py-3.5 border border-brown text-brown rounded-xl font-jost text-[11px] tracking-[0.18em] uppercase font-medium hover:bg-brown hover:text-cream transition-all">
-              Enroll in Level 1
-            </a>
+            <a href={COURSE_URL} className="block text-center py-3.5 border border-brown text-brown rounded-xl font-jost text-[11px] tracking-[0.18em] uppercase font-medium hover:bg-brown hover:text-cream transition-all">Enroll in Level 1</a>
           </div>
-          {/* Level 2 */}
           <div className="border-2 border-gold rounded-2xl p-6 text-left relative">
-            <div className="absolute -top-3 left-6 bg-gold text-brown text-[10px] tracking-[0.2em] uppercase font-semibold px-3 py-1 rounded-full">
-              Most Popular
-            </div>
+            <div className="absolute -top-3 left-6 bg-gold text-brown text-[10px] tracking-[0.2em] uppercase font-semibold px-3 py-1 rounded-full">Most Popular</div>
             <p className="text-[10px] tracking-[0.2em] uppercase text-amber opacity-65 mb-2">Level 2 · Sacred Circle</p>
             <h3 className="font-playfair text-[22px] font-bold text-brown mb-2">Sacred Circle</h3>
             <div className="flex items-baseline gap-1 mb-1">
@@ -317,60 +294,64 @@ export default function Results() {
             <p className="text-[12px] text-[rgba(107,76,42,0.5)] mb-5">After Level 1 · Cancel anytime</p>
             <div className="h-px bg-[rgba(201,169,110,0.2)] mb-5" />
             <ul className="flex flex-col gap-2.5 mb-6">
-              {['Everything in Level 1', 'Monthly live sessions with Brock', 'One-on-one bodywork consultations', 'Private community of women in practice', 'New content monthly'].map(f => (
+              {['Everything in Level 1','Monthly live sessions with Brock','One-on-one bodywork consultations','Private community of women in practice','New content monthly'].map(f => (
                 <li key={f} className="text-[13px] text-[rgba(107,76,42,0.75)] pl-4 relative before:content-['✦'] before:absolute before:left-0 before:text-gold before:text-[9px] before:top-1">{f}</li>
               ))}
             </ul>
-            <a href={COURSE_URL} className="block text-center py-3.5 bg-brown text-cream rounded-xl font-jost text-[11px] tracking-[0.18em] uppercase font-medium hover:opacity-85 transition-opacity">
-              Join Sacred Circle
-            </a>
+            <a href={COURSE_URL} className="block text-center py-3.5 bg-brown text-cream rounded-xl font-jost text-[11px] tracking-[0.18em] uppercase font-medium hover:opacity-85 transition-opacity">Join Sacred Circle</a>
           </div>
         </div>
         <div className="flex items-center justify-center gap-2 text-[12px] text-[rgba(107,76,42,0.45)]">
-          <span>🛡</span>
-          <span>30-day full refund guarantee · No questions asked</span>
+          <span>🛡</span><span>30-day full refund guarantee · No questions asked</span>
         </div>
       </section>
 
-      {/* ── Final CTA ────────────────────────────────────────── */}
+      {/* ── Final CTA ─────────────────────────────────────── */}
       <section className="bg-brown px-6 py-20 text-center relative overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[480px] h-[480px] rounded-full pointer-events-none" style={{ border: '1px solid rgba(201,169,110,0.07)' }} />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full pointer-events-none" style={{ border: '1px solid rgba(201,169,110,0.12)' }} />
         <div className="relative z-10 max-w-sm mx-auto">
           <p className="text-[10px] tracking-[0.3em] uppercase text-[rgba(201,169,110,0.5)] mb-4">Begin Today</p>
           <h2 className="font-playfair text-[clamp(30px,5vw,48px)] font-bold text-cream leading-[1.05] mb-4">
-            Your body has been{' '}
-            <em className="italic text-gold block">waiting for this.</em>
+            Your body has been <em className="italic text-gold block">waiting for this.</em>
           </h2>
-          <p className="font-cormorant text-[19px] italic text-[rgba(245,238,216,0.5)] mb-8">
-            You only need to say yes.
-          </p>
-          <a
-            href={COURSE_URL}
-            className="inline-block w-full py-[17px] bg-gold text-brown rounded-xl font-jost text-[12px] font-semibold tracking-[0.2em] uppercase hover:opacity-88 transition-opacity"
-          >
+          <p className="font-cormorant text-[19px] italic text-[rgba(245,238,216,0.5)] mb-8">You only need to say yes.</p>
+          <a href={COURSE_URL} className="inline-block w-full py-[17px] bg-gold text-brown rounded-xl font-jost text-[12px] font-semibold tracking-[0.2em] uppercase hover:opacity-88 transition-opacity">
             Begin My FBO Journey
           </a>
-          <p className="mt-4 text-[11px] text-[rgba(245,238,216,0.22)]">
-            30-day guarantee · Lifetime access · Cancel Sacred Circle anytime
-          </p>
+          <p className="mt-4 text-[11px] text-[rgba(245,238,216,0.22)]">30-day guarantee · Lifetime access · Cancel Sacred Circle anytime</p>
         </div>
       </section>
 
-      {/* ── Footer ───────────────────────────────────────────── */}
+      {/* ── Footer ────────────────────────────────────────── */}
       <footer className="bg-brown border-t border-[rgba(201,169,110,0.12)] px-6 py-6 flex items-center justify-between">
-        <span className="font-playfair text-[14px] italic text-[rgba(201,169,110,0.4)]">
-          Brock John · Somatic Sex Education
-        </span>
+        <span className="font-playfair text-[14px] italic text-[rgba(201,169,110,0.4)]">Brock John · Somatic Sex Education</span>
         <div className="flex gap-5">
-          {['Privacy', 'Terms', 'Contact'].map(l => (
-            <a key={l} href="#" className="text-[11px] tracking-[0.1em] uppercase text-[rgba(245,238,216,0.2)] hover:text-[rgba(245,238,216,0.45)] transition-colors">
-              {l}
-            </a>
+          {['Privacy','Terms','Contact'].map(l => (
+            <a key={l} href="#" className="text-[11px] tracking-[0.1em] uppercase text-[rgba(245,238,216,0.2)] hover:text-[rgba(245,238,216,0.45)] transition-colors">{l}</a>
           ))}
         </div>
       </footer>
 
     </div>
+  )
+}
+
+// ─── Exported wrapper — Suspense required for useSearchParams ─────────────────
+
+export default function Results() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-warm flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 rounded-full border border-[rgba(201,169,110,0.4)] bg-[rgba(201,169,110,0.08)] flex items-center justify-center text-xl mx-auto mb-4">
+            ✦
+          </div>
+          <p className="font-playfair text-[18px] italic text-amber">Preparing your results…</p>
+        </div>
+      </div>
+    }>
+      <ResultsInner />
+    </Suspense>
   )
 }

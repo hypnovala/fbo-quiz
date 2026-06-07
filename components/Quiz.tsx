@@ -141,32 +141,40 @@ function InterstitialView({
 
 export default function Quiz() {
   const router = useRouter()
-  const [current, setCurrent] = useState(0)
-  const [answers, setAnswers] = useState<Record<string, number>>({})
+  const [current, setCurrent]   = useState(0)
+  const [answers, setAnswers]   = useState<Record<string, number>>({})
   const [selected, setSelected] = useState<number | null>(null)
-  const [animKey, setAnimKey] = useState(0)
+  const [animKey, setAnimKey]   = useState(0)
 
-  const screen = SCREENS[current]
-  const totalQ = SCREENS.filter(s => s.type === 'question').length
+  const screen   = SCREENS[current]
+  const totalQ   = SCREENS.filter(s => s.type === 'question').length
   const answeredN = Object.keys(answers).length
   const progressPct = Math.max(10, Math.round((answeredN / (totalQ + 1)) * 100))
   const questionIndex = SCREENS.slice(0, current + 1).filter(s => s.type === 'question').length
 
   function advance() {
-    if (screen.type === 'question' && selected !== null) {
-      setAnswers(prev => ({ ...prev, [screen.id]: selected }))
-    }
+    // Build the full updated answers synchronously — don't rely on state update
+    const updatedAnswers: Record<string, number> =
+      screen.type === 'question' && selected !== null
+        ? { ...answers, [screen.id]: selected }
+        : { ...answers }
+
     const nextIdx = current + 1
+
+    // Last screen — go to results
     if (nextIdx >= SCREENS.length) {
-      // Navigate to results, passing answers via sessionStorage
-      if (typeof window !== 'undefined') {
-        const updatedAnswers = screen.type === 'question' && selected !== null
-          ? { ...answers, [screen.id]: selected }
-          : answers
-        sessionStorage.setItem('fbo_answers', JSON.stringify(updatedAnswers))
+      // Encode answers as compact query string: q1=0&q2=2 etc.
+      const params = new URLSearchParams()
+      for (const [k, v] of Object.entries(updatedAnswers)) {
+        params.set(k, String(v))
       }
-      router.push('/result')
+      router.push(`/result?${params.toString()}`)
       return
+    }
+
+    // Update state for UI
+    if (screen.type === 'question' && selected !== null) {
+      setAnswers(updatedAnswers)
     }
     setSelected(null)
     setAnimKey(k => k + 1)
@@ -202,12 +210,6 @@ export default function Quiz() {
         )}
         {screen.type === 'interstitial' && (
           <InterstitialView screen={screen} onContinue={advance} />
-        )}
-        {screen.type === 'results' && (
-          // Shouldn't render — we redirect before this
-          <div className="flex-1 flex items-center justify-center">
-            <p className="text-amber font-cormorant italic text-xl">Loading your results…</p>
-          </div>
         )}
       </div>
     </div>
