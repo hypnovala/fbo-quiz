@@ -74,9 +74,6 @@ function ResultsInner() {
             >
               Start My Activation Journey
             </a>
-            <p className="text-[12px] text-[rgba(107,76,42,0.5)] tracking-wide">
-              Join <strong className="text-amber font-medium">2,400+ women</strong> already in the program
-            </p>
           </div>
         </div>
       </section>
@@ -235,31 +232,6 @@ function ResultsInner() {
         <a href={COURSE_URL} className="inline-block py-4 px-10 bg-gold text-brown rounded-xl font-jost text-[12px] font-semibold tracking-[0.2em] uppercase hover:opacity-88 transition-opacity">
           Begin the Journey
         </a>
-      </section>
-
-      {/* ── Testimonials ──────────────────────────────────── */}
-      <section className="bg-soft px-6 py-14">
-        <div className="max-w-xl mx-auto">
-          <p className="text-[10px] tracking-[0.3em] uppercase text-gold font-medium mb-3">Student Voices</p>
-          <h2 className="font-playfair text-[clamp(26px,4vw,38px)] font-bold text-brown leading-[1.1] mb-8">
-            Women Who <em className="italic text-amber">Came Home</em>
-          </h2>
-          <div className="flex flex-col gap-3">
-            {[
-              { featured: true,  quote: "By Module 3 I was weeping — not from sadness, but from finally feeling myself. I had no idea my body held this. The FBO program changed how I live inside my body every single day.", name: 'Maya R.',    tag: 'Level 1 Graduate · Atlanta, GA' },
-              { featured: false, quote: "Brock's presence makes this feel completely safe. I went from shut down to fully alive.",                                                                                              name: 'Danielle K.', tag: 'Sacred Circle Member' },
-              { featured: false, quote: "I've done therapy, retreats, workshops. Nothing reached what this 35-minute practice did in one session.",                                                                             name: 'Simone T.',   tag: 'Level 2 Member' },
-              { featured: false, quote: "Worth more than any retreat at ten times the price. This is the real thing.",                                                                                                         name: 'Camille F.',  tag: 'Sacred Circle' },
-            ].map((r, i) => (
-              <div key={i} className={`p-6 border rounded-xl relative overflow-hidden ${r.featured ? 'bg-brown border-brown' : 'bg-white border-[rgba(201,169,110,0.2)]'}`}>
-                <span className={`absolute top-3 right-5 font-playfair text-[60px] italic leading-none ${r.featured ? 'text-[rgba(201,169,110,0.06)]' : 'text-[rgba(201,169,110,0.08)]'}`}>"</span>
-                <div className="text-gold tracking-[4px] text-[12px] mb-3">★★★★★</div>
-                <p className={`font-cormorant text-[17px] italic leading-[1.65] mb-4 ${r.featured ? 'text-[rgba(245,238,216,0.88)]' : 'text-brown'}`}>"{r.quote}"</p>
-                <p className={`text-[11px] tracking-[0.15em] uppercase ${r.featured ? 'text-[rgba(201,169,110,0.5)]' : 'text-[rgba(107,76,42,0.5)]'}`}>— {r.name} · {r.tag}</p>
-              </div>
-            ))}
-          </div>
-        </div>
       </section>
 
       {/* ── Final CTA ─────────────────────────────────────── */}
