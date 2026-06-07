@@ -162,7 +162,7 @@ export default function Quiz() {
     const nextIdx = current + 1
 
     // Last screen — go to results
-    if (nextIdx >= SCREENS.length) {
+    if (nextIdx >= SCREENS.length || SCREENS[nextIdx].type === 'results') {
       // Encode answers as compact query string: q1=0&q2=2 etc.
       const params = new URLSearchParams()
       for (const [k, v] of Object.entries(updatedAnswers)) {
