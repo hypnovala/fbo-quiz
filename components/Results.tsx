@@ -82,7 +82,6 @@ function ResultsInner() {
       <div className="bg-[#EDE4C8] border-y border-[rgba(201,169,110,0.3)] px-6 py-4">
         <div className="flex items-center justify-center max-w-2xl mx-auto">
           {[
-            { val: '2,400+', label: 'Women Enrolled' },
             { val: '7',      label: 'Deep Modules'   },
             { val: '★ 4.9',  label: 'Student Rating' },
             { val: '35 min', label: 'Core Practice'  },
