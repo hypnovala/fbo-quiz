@@ -131,64 +131,117 @@ export const SCREENS: Screen[] = [
   },
 ]
 
-// ─── Module metadata ──────────────────────────────────────────────────────────
+// ─── Module metadata — real FBO course modules ────────────────────────────────
+// Index: 0=Arrival, 1=Sensual Awakening, 2=Breath Ignition,
+//        3=Energy Awareness, 4=Expansion, 5=Circulation, 6=Integration
 
 export interface Module {
   num: string
   title: string
   tag: string
   desc: string
+  detail: string
 }
 
 export const MODULES: Module[] = [
-  { num: '01', title: 'Arriving in the Body',           tag: 'Foundation',  desc: 'Somatic grounding, nervous system safety, breath as anchor.' },
-  { num: '02', title: 'The Breath Portal',              tag: 'Activation',  desc: 'Breath as the bridge from thinking into full sensation.' },
-  { num: '03', title: 'Yoni Mapping & Awakening',       tag: 'Embodiment',  desc: 'Internal landscape, sensory vocabulary, yoni awakening.' },
-  { num: '04', title: 'The Pleasure Current',           tag: 'Expansion',   desc: 'Moving orgasmic energy beyond one location in the body.' },
-  { num: '05', title: 'Moving Energy Through the Body', tag: 'Flow',        desc: 'Slowing the arc of arousal, circulating pleasure fully.' },
-  { num: '06', title: 'Receiving Without Performing',   tag: 'Release',     desc: 'Dissolving the observer self — pure sensation, no commentary.' },
-  { num: '07', title: 'Full Body Orgasmic Activation',  tag: 'Integration', desc: 'Complete integration: breath, energy, sensation, presence.' },
+  {
+    num: '01',
+    title: 'Arrival',
+    tag: 'Foundation',
+    desc: 'Helping the nervous system settle out of daily stress so the body can receive.',
+    detail: 'Before anything can open, the body needs to feel safe. Arrival is the essential first step — releasing the accumulated tension of daily life so your nervous system can shift from doing into being.',
+  },
+  {
+    num: '02',
+    title: 'Sensual Awakening',
+    tag: 'Presence',
+    desc: 'Learning to listen to pure sensation before any story takes over.',
+    detail: 'Most of us experience pleasure through the filter of the mind — narrating, judging, comparing. Sensual Awakening teaches you to meet sensation directly, before the thinking self has a chance to interpret it.',
+  },
+  {
+    num: '03',
+    title: 'Breath Ignition',
+    tag: 'Activation',
+    desc: 'Using conscious breath as the bridge between safety and erotic aliveness.',
+    detail: 'Breath is the body\'s most immediate gateway. In this module, you learn to use conscious breathing as the bridge between nervous system safety and full erotic aliveness — the fuel for everything that follows.',
+  },
+  {
+    num: '04',
+    title: 'Energy Awareness',
+    tag: 'Awakening',
+    desc: 'Witnessing and awakening the feminine life-force (jing) already present.',
+    detail: 'Rooted in Taoist tradition, this module turns attention inward to the feminine life-force — jing — that already exists within you. Through guided awareness, you begin to feel, witness, and consciously work with this living energy.',
+  },
+  {
+    num: '05',
+    title: 'Expansion',
+    tag: 'Expansion',
+    desc: 'Spreading pleasure beyond the pelvis into whole-body orgasmic waves.',
+    detail: 'Pleasure was never meant to stay in one place. Expansion teaches you to let sensation move — spreading from the pelvis into the whole body as orgasmic waves that are available to every woman who learns to receive them.',
+  },
+  {
+    num: '06',
+    title: 'Circulation',
+    tag: 'Flow',
+    desc: 'Moving awakened energy through the Taoist microcosmic orbit to sustain and refine it.',
+    detail: 'Once energy is awakened and expanded, Circulation teaches you to move it through the body\'s energetic pathways — the Taoist microcosmic orbit — so pleasure becomes sustainable, self-renewing, and ever more refined.',
+  },
+  {
+    num: '07',
+    title: 'Integration',
+    tag: 'Integration',
+    desc: 'Resting in the afterglow so the nervous system can fully absorb and rewire.',
+    detail: 'The final and often overlooked step. Integration is the practice of resting in the afterglow — allowing the nervous system the time and space to fully absorb the experience, consolidate the shifts, and rewire toward wholeness.',
+  },
 ]
 
 // ─── Scoring matrix ───────────────────────────────────────────────────────────
 // SCORING[questionId][answerIndex] = { moduleIndex(0-based): points }
+//
+// 0 = Arrival          → for: overwhelmed, disconnected, stress, never done somatic work
+// 1 = Sensual Awakening → for: in head, narrating, performing, watching themselves
+// 2 = Breath Ignition  → for: curious/new, some breathwork/yoga, wants a bridge
+// 3 = Energy Awareness → for: somewhat connected, aware but not home, Taoist curiosity
+// 4 = Expansion        → for: wants more, pleasure is small/localized, ready to expand
+// 5 = Circulation      → for: experienced, pleasure exists but doesn't sustain/circulate
+// 6 = Integration      → for: deeply practiced, rushes past the afterglow, extensive somatic work
 
 export const SCORING: Record<string, Record<number, number>[]> = {
   q1: [
-    { 0: 3 },          // A → M01 +3
-    { 0: 2, 1: 1 },    // B → M01 +2, M02 +1
-    { 1: 2, 2: 1 },    // C → M02 +2, M03 +1
-    { 3: 3 },          // D → M04 +3
+    { 0: 3 },             // A: completely disconnected → Arrival
+    { 0: 2, 3: 1 },       // B: aware not at home → Arrival + Energy Awareness
+    { 3: 2, 1: 1 },       // C: somewhat connected → Energy Awareness + Sensual Awakening
+    { 4: 2, 5: 1 },       // D: deeply in body → Expansion + Circulation
   ],
   q2: [
-    { 0: 3 },          // A → M01 +3
-    { 2: 3 },          // B → M03 +3
-    { 5: 3 },          // C → M06 +3
-    { 3: 2, 4: 1 },    // D → M04 +2, M05 +1
+    { 0: 3 },             // A: pleasure far away → Arrival
+    { 4: 3 },             // B: small/localized → Expansion
+    { 1: 3 },             // C: perform it / watching self → Sensual Awakening
+    { 4: 2, 5: 1 },       // D: want it to expand → Expansion + Circulation
   ],
   q3: [
-    { 0: 2, 5: 1 },    // A → M01 +2, M06 +1
-    { 3: 2, 6: 1 },    // B → M04 +2, M07 +1
-    { 1: 2, 2: 1 },    // C → M02 +2, M03 +1
-    { 1: 3 },          // D → M02 +3
+    { 0: 2, 1: 1 },       // A: heal shame/past → Arrival + Sensual Awakening
+    { 4: 2, 5: 1 },       // B: deeper orgasmic experience → Expansion + Circulation
+    { 0: 1, 2: 2 },       // C: at home in body → Breath Ignition + Arrival
+    { 2: 2, 3: 1 },       // D: curious/explore → Breath Ignition + Energy Awareness
   ],
   q4: [
-    { 0: 3 },          // A → M01 +3
-    { 4: 3 },          // B → M05 +3
-    { 5: 2, 1: 1 },    // C → M06 +2, M02 +1
-    { 6: 3 },          // D → M07 +3
+    { 0: 3 },             // A: brace/contract → Arrival
+    { 6: 2, 5: 1 },       // B: rush to peak, lose journey → Integration + Circulation
+    { 1: 3 },             // C: head/narrate → Sensual Awakening
+    { 5: 2, 6: 1 },       // D: can receive, want to expand → Circulation + Integration
   ],
   q5: [
-    { 1: 2 },          // A → M02 +2
-    {},                // B → balanced
-    { 6: 1 },          // C → M07 +1
-    {},                // D → balanced
+    { 2: 2 },             // A: 15-20 min → Breath Ignition (shorter practices)
+    { 0: 1 },             // B: 35 min → slight Arrival lean
+    { 5: 1, 6: 1 },       // C: hour+ → Circulation + Integration
+    {},                   // D: flexible → balanced
   ],
   q6: [
-    { 0: 3 },          // A → M01 +3
-    { 2: 2, 1: 1 },    // B → M03 +2, M02 +1
-    { 4: 2, 5: 1 },    // C → M05 +2, M06 +1
-    { 6: 3 },          // D → M07 +3
+    { 0: 3 },             // A: never → Arrival
+    { 2: 2, 3: 1 },       // B: yoga/breathwork/meditation → Breath Ignition + Energy Awareness
+    { 3: 1, 4: 2 },       // C: therapy/bodywork → Energy Awareness + Expansion
+    { 5: 2, 6: 2 },       // D: extensive somatic → Circulation + Integration
   ],
 }
 
@@ -206,7 +259,10 @@ export function calcScores(answers: Record<string, number>): number[] {
 }
 
 export function getRecommendedIndex(scores: number[]): number {
-  let max = -1, idx = 0
-  scores.forEach((s, i) => { if (s > max) { max = s; idx = i } })
+  let max = -1
+  let idx = 0
+  scores.forEach((s, i) => {
+    if (s > max) { max = s; idx = i }
+  })
   return idx
 }
