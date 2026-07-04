@@ -192,50 +192,6 @@ function ResultsInner() {
         </div>
       </section>
 
-      {/* Pricing */}
-      <section id="pricing" className="bg-warm px-6 py-14 text-center">
-        <p className="text-[10px] tracking-[0.3em] uppercase text-gold font-medium mb-3">Begin Today</p>
-        <h2 className="font-playfair text-[clamp(26px,4vw,38px)] font-bold text-brown leading-[1.1] mb-3">
-          Choose Your <em className="italic text-amber">Path In</em>
-        </h2>
-        <p className="font-cormorant text-[18px] italic text-amber opacity-78 mb-8">Both levels grant lifetime access.</p>
-        <div className="flex flex-col gap-4 max-w-sm mx-auto mb-6">
-          <div className="border border-[rgba(201,169,110,0.3)] rounded-2xl p-6 text-left">
-            <p className="text-[10px] tracking-[0.2em] uppercase text-amber opacity-65 mb-2">Level 1 · Complete Program</p>
-            <h3 className="font-playfair text-[22px] font-bold text-brown mb-2">Full Body Orgasmic</h3>
-            <p className="font-playfair text-[38px] font-bold text-brown mb-1">$197</p>
-            <p className="text-[12px] text-[rgba(107,76,42,0.5)] mb-5">One-time · Lifetime access</p>
-            <div className="h-px bg-[rgba(201,169,110,0.2)] mb-5" />
-            <ul className="flex flex-col gap-2.5 mb-6">
-              {['All 7 somatic activation modules','35-minute core activation practice','Audio + video guidance by Brock','Student onboarding & support','Lifetime access — return anytime'].map(f => (
-                <li key={f} className="text-[13px] text-[rgba(107,76,42,0.75)] pl-4 relative before:content-[&apos;✦&apos;] before:absolute before:left-0 before:text-gold before:text-[9px] before:top-1">{f}</li>
-              ))}
-            </ul>
-            <a href={COURSE_URL} className="block text-center py-3.5 border border-brown text-brown rounded-xl font-jost text-[11px] tracking-[0.18em] uppercase font-medium hover:bg-brown hover:text-cream transition-all">Enroll in Level 1</a>
-          </div>
-          <div className="border-2 border-gold rounded-2xl p-6 text-left relative">
-            <div className="absolute -top-3 left-6 bg-gold text-brown text-[10px] tracking-[0.2em] uppercase font-semibold px-3 py-1 rounded-full">Most Popular</div>
-            <p className="text-[10px] tracking-[0.2em] uppercase text-amber opacity-65 mb-2">Level 2 · Sacred Circle</p>
-            <h3 className="font-playfair text-[22px] font-bold text-brown mb-2">Sacred Circle</h3>
-            <div className="flex items-baseline gap-1 mb-1">
-              <span className="font-playfair text-[38px] font-bold text-brown">$97</span>
-              <span className="text-[16px] text-amber">/mo</span>
-            </div>
-            <p className="text-[12px] text-[rgba(107,76,42,0.5)] mb-5">After Level 1 · Cancel anytime</p>
-            <div className="h-px bg-[rgba(201,169,110,0.2)] mb-5" />
-            <ul className="flex flex-col gap-2.5 mb-6">
-              {['Everything in Level 1','Monthly live sessions with Brock','One-on-one bodywork consultations','Private community of women in practice','New content monthly'].map(f => (
-                <li key={f} className="text-[13px] text-[rgba(107,76,42,0.75)] pl-4 relative before:content-[&apos;✦&apos;] before:absolute before:left-0 before:text-gold before:text-[9px] before:top-1">{f}</li>
-              ))}
-            </ul>
-            <a href={COURSE_URL} className="block text-center py-3.5 bg-brown text-cream rounded-xl font-jost text-[11px] tracking-[0.18em] uppercase font-medium hover:opacity-85 transition-opacity">Join Sacred Circle</a>
-          </div>
-        </div>
-        <div className="flex items-center justify-center gap-2 text-[12px] text-[rgba(107,76,42,0.45)]">
-          <span>🛡</span><span>30-day full refund guarantee · No questions asked</span>
-        </div>
-      </section>
-
       {/* Final CTA */}
       <section className="bg-brown px-6 py-20 text-center relative overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[480px] h-[480px] rounded-full pointer-events-none" style={{ border: '1px solid rgba(201,169,110,0.07)' }} />
