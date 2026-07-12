@@ -6,7 +6,7 @@ import { MODULES, calcScores, getRecommendedIndex } from './quizData'
 
 const COURSE_URL = 'https://course.brockjohn.com/'
 const SOCIAL_LINKS = [
-  { label: 'Instagram', href: 'https://www.instagram.com/hersomaticbody_eset/' },
+  { label: 'Instagram', href: 'https://www.instagram.com/hersomaticbody_reset/' },
   { label: 'TikTok', href: 'https://www.tiktok.com/@brock.bodywork' },
 ]
 
