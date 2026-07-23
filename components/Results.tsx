@@ -115,12 +115,6 @@ function ResultsInner() {
             The body you have right now already knows how to feel this. This program simply removes what's been in the way.
           </p>
           <div className="flex flex-col items-center gap-3">
-            <a
-              href={COURSE_URL}
-              className="w-full max-w-xs py-3 border border-[rgba(107,76,42,0.22)] text-brown rounded-xl font-jost text-[12px] font-medium tracking-[0.2em] uppercase hover:bg-[rgba(201,169,110,0.08)] transition-colors text-center block"
-            >
-              Return to Course
-            </a>
             <a href={COURSE_URL} className="w-full max-w-xs py-4 bg-brown text-cream rounded-xl font-jost text-[12px] font-medium tracking-[0.2em] uppercase hover:opacity-85 transition-opacity text-center block">
               Learn More
             </a>
@@ -381,12 +375,6 @@ function ResultsInner() {
             Your body has been <em className="italic text-gold block">waiting for this.</em>
           </h2>
           <p className="font-cormorant text-[19px] italic text-[rgba(245,238,216,0.5)] mb-8">You only need to say yes.</p>
-          <a
-            href={COURSE_URL}
-            className="inline-block w-full py-[15px] mb-3 border border-[rgba(201,169,110,0.35)] text-cream rounded-xl font-jost text-[12px] font-semibold tracking-[0.2em] uppercase hover:bg-[rgba(201,169,110,0.08)] transition-colors"
-          >
-            Return to Course
-          </a>
           <a href={COURSE_URL} className="inline-block w-full py-[17px] bg-gold text-brown rounded-xl font-jost text-[12px] font-semibold tracking-[0.2em] uppercase hover:opacity-88 transition-opacity">Learn More</a>
           <p className="mt-4 text-[11px] text-[rgba(245,238,216,0.22)]">30-day guarantee · Lifetime access · Cancel Sacred Circle anytime</p>
           <a
