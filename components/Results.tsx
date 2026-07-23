@@ -6,8 +6,8 @@ import { MODULES, calcScores, getRecommendedIndex } from './quizData'
 
 const COURSE_URL = 'https://course.brockjohn.com/'
 const SOCIAL_LINKS = [
-  { label: 'Instagram', href: 'https://www.instagram.com/hersomaticbody_reset/' },
-  { label: 'TikTok', href: 'https://www.tiktok.com/@brock.bodywork' },
+  { label: 'Instagram', href: 'https://www.instagram.com/valasomatic_reset/' },
+  { label: 'TikTok', href: 'https://www.tiktok.com/@vala_somaticreset' },
 ]
 
 function ResultsInner() {
@@ -36,7 +36,7 @@ function ResultsInner() {
             Retake quiz
           </a>
           <a href={COURSE_URL} className="bg-brown text-cream px-5 py-2.5 rounded-lg text-[11px] tracking-[0.18em] uppercase font-medium hover:opacity-85 transition-opacity">
-            Begin Program
+            Sign Up Now
           </a>
         </div>
       </nav>
@@ -75,7 +75,7 @@ function ResultsInner() {
           </p>
           <div className="flex flex-col items-center gap-3">
             <a href={COURSE_URL} className="w-full max-w-xs py-4 bg-brown text-cream rounded-xl font-jost text-[12px] font-medium tracking-[0.2em] uppercase hover:opacity-85 transition-opacity text-center block">
-              Start My Activation Journey
+              Sign Up Now
             </a>
           </div>
         </div>
@@ -85,9 +85,9 @@ function ResultsInner() {
       <div className="bg-[#EDE4C8] border-y border-[rgba(201,169,110,0.3)] px-6 py-4">
         <div className="flex items-center justify-center max-w-2xl mx-auto">
           {[
-            { val: '7',      label: 'Deep Modules'   },
-            { val: '★ 4.9',  label: 'Student Rating' },
-            { val: '35 min', label: 'Core Practice'  },
+            { val: '7',        label: 'Deep Modules'    },
+            { val: '35 min',   label: 'Core Practice'   },
+            { val: 'Lifetime', label: 'Access'          },
           ].map((s, i, arr) => (
             <div key={s.label} className="flex items-center">
               <div className="flex flex-col items-center px-4 py-1">
@@ -104,9 +104,12 @@ function ResultsInner() {
       <section className="bg-soft px-6 py-14 border-t border-[rgba(201,169,110,0.15)]">
         <div className="max-w-xl mx-auto">
           <p className="text-[10px] tracking-[0.3em] uppercase text-gold font-medium mb-3">Your Results</p>
-          <h2 className="font-playfair text-[clamp(26px,4vw,38px)] font-bold text-brown leading-[1.1] mb-8">
+          <h2 className="font-playfair text-[clamp(26px,4vw,38px)] font-bold text-brown leading-[1.1] mb-4">
             Your Recommended <em className="italic text-amber">Starting Module</em>
           </h2>
+          <p className="text-[14px] leading-[1.8] text-[rgba(107,76,42,0.7)] mb-8 max-w-md">
+            There's no wrong door into this work. Your answers simply point to where your body is asking to begin — the place where a little attention will open the most.
+          </p>
 
           {/* Hero recommendation card */}
           <div className="bg-brown rounded-2xl p-6 mb-6 relative overflow-hidden">
@@ -180,28 +183,119 @@ function ResultsInner() {
             })}
           </div>
           <a href={COURSE_URL} className="block w-full text-center py-4 bg-gold text-brown rounded-xl font-jost text-[12px] font-semibold tracking-[0.2em] uppercase hover:opacity-88 transition-opacity">
-            Begin the Journey
+            Sign Up Now
           </a>
         </div>
       </section>
 
-      {/* Testimonials */}
+      {/* The Approach */}
       <section className="bg-soft px-6 py-14">
         <div className="max-w-xl mx-auto">
-          <p className="text-[10px] tracking-[0.3em] uppercase text-gold font-medium mb-3">Student Voices</p>
+          <p className="text-[10px] tracking-[0.3em] uppercase text-gold font-medium mb-3">The Approach</p>
+          <h2 className="font-playfair text-[clamp(26px,4vw,38px)] font-bold text-brown leading-[1.1] mb-4">
+            Rooted in the Body's <em className="italic text-amber">Own Wisdom</em>
+          </h2>
+          <p className="text-[14px] leading-[1.8] text-[rgba(107,76,42,0.7)] mb-8 max-w-md">
+            This is somatic education, not performance. Every practice in the program is built on one principle: the body opens when it feels safe, and it closes when it's rushed.
+          </p>
+          <div className="flex flex-col gap-3">
+            {[
+              {
+                icon: '☾',
+                title: 'Nervous System First',
+                body: "Grounded in polyvagal principles, the work begins with regulation — teaching your body the difference between bracing and receiving. Sensation follows safety, never the other way around.",
+              },
+              {
+                icon: '≈',
+                title: 'Breath as the Bridge',
+                body: "Breath is the fastest doorway between the mind and the body. You'll learn specific breathing patterns that soften the guard your body has been holding, often for years.",
+              },
+              {
+                icon: '◎',
+                title: 'Energy That Circulates',
+                body: "Drawing on Taoist energy practices, the later modules teach sensation to move — up the spine, through the belly, out to the fingertips — rather than staying locked in one place.",
+              },
+            ].map((c) => (
+              <div key={c.title} className="p-6 bg-white border border-[rgba(201,169,110,0.2)] rounded-xl flex gap-4">
+                <div className="w-10 h-10 rounded-xl bg-[rgba(201,169,110,0.12)] border border-[rgba(201,169,110,0.25)] flex items-center justify-center flex-shrink-0 text-gold text-[16px]">
+                  {c.icon}
+                </div>
+                <div>
+                  <p className="font-playfair text-[17px] font-bold text-brown mb-1 leading-snug">{c.title}</p>
+                  <p className="text-[13px] leading-[1.7] text-[rgba(107,76,42,0.75)]">{c.body}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section className="bg-warm px-6 py-14 border-t border-[rgba(201,169,110,0.15)]">
+        <div className="max-w-xl mx-auto">
+          <p className="text-[10px] tracking-[0.3em] uppercase text-gold font-medium mb-3">How It Works</p>
           <h2 className="font-playfair text-[clamp(26px,4vw,38px)] font-bold text-brown leading-[1.1] mb-8">
-            Women Who <em className="italic text-amber">Came Home</em>
+            Slow Is the <em className="italic text-amber">Fastest Way</em>
+          </h2>
+          <div className="flex flex-col gap-6">
+            {[
+              {
+                step: '01',
+                title: 'Arrive where your body is',
+                body: "Start with the module your results point to — or begin at Module 1 and let the arc build naturally. Everything is self-paced. Nothing expires.",
+              },
+              {
+                step: '02',
+                title: 'Practice a little, often',
+                body: "The core practice is 35 minutes, but most days ask far less of you. Short, repeatable practices matter more than long, occasional ones — that's how the nervous system actually learns.",
+              },
+              {
+                step: '03',
+                title: 'Let it integrate',
+                body: "The final module is devoted entirely to integration, because awakening that isn't woven into daily life fades. What you build here is meant to stay with you.",
+              },
+            ].map((s) => (
+              <div key={s.step} className="flex gap-5">
+                <span className="font-playfair text-[26px] font-bold text-[rgba(201,169,110,0.45)] flex-shrink-0 leading-none mt-1">{s.step}</span>
+                <div>
+                  <p className="font-playfair text-[18px] font-bold text-brown mb-1 leading-snug">{s.title}</p>
+                  <p className="text-[13px] leading-[1.75] text-[rgba(107,76,42,0.75)]">{s.body}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="bg-soft px-6 py-14 border-t border-[rgba(201,169,110,0.15)]">
+        <div className="max-w-xl mx-auto">
+          <p className="text-[10px] tracking-[0.3em] uppercase text-gold font-medium mb-3">Good Questions</p>
+          <h2 className="font-playfair text-[clamp(26px,4vw,38px)] font-bold text-brown leading-[1.1] mb-8">
+            What Women <em className="italic text-amber">Usually Ask</em>
           </h2>
           <div className="flex flex-col gap-3">
             {[
-              { featured: true,  quote: "By Module 3 I was weeping — not from sadness, but from finally feeling myself. I had no idea my body held this. The FBO program changed how I live inside my body every single day.", name: 'Maya R.',    tag: 'Level 1 Graduate · Atlanta, GA' },
-              { featured: false, quote: "I've done therapy, retreats, workshops. Nothing reached what this 35-minute practice did in one session.",                                                                             name: 'Simone T.',   tag: 'Level 2 Member' },
-            ].map((r, i) => (
-              <div key={i} className={`p-6 border rounded-xl relative overflow-hidden ${r.featured ? 'bg-brown border-brown' : 'bg-white border-[rgba(201,169,110,0.2)]'}`}>
-                <span className={`absolute top-3 right-5 font-playfair text-[60px] italic leading-none ${r.featured ? 'text-[rgba(201,169,110,0.06)]' : 'text-[rgba(201,169,110,0.08)]'}`}>"</span>
-                <div className="text-gold tracking-[4px] text-[12px] mb-3">★★★★★</div>
-                <p className={`font-cormorant text-[17px] italic leading-[1.65] mb-4 ${r.featured ? 'text-[rgba(245,238,216,0.88)]' : 'text-brown'}`}>"{r.quote}"</p>
-                <p className={`text-[11px] tracking-[0.15em] uppercase ${r.featured ? 'text-[rgba(201,169,110,0.5)]' : 'text-[rgba(107,76,42,0.5)]'}`}>— {r.name} · {r.tag}</p>
+              {
+                q: 'Do I need any experience with this kind of work?',
+                a: "None. The program assumes nothing except a willingness to slow down. Module 1 exists precisely so that you can arrive exactly as you are.",
+              },
+              {
+                q: 'What if I feel very little at first?',
+                a: "That's common, and it's information — not failure. A body that has spent years bracing needs time to trust that it's safe to feel. The early modules are built for exactly this.",
+              },
+              {
+                q: 'Is this therapy?',
+                a: "No. This is somatic education — structured practices you do with your own body, in your own space. It can sit alongside therapy beautifully, but it doesn't replace it.",
+              },
+              {
+                q: 'How private is this?',
+                a: "Completely. Everything happens on your own device, in your own time. There's no group requirement, no camera, no sharing unless you choose it.",
+              },
+            ].map((f) => (
+              <div key={f.q} className="p-6 bg-white border border-[rgba(201,169,110,0.2)] rounded-xl">
+                <p className="font-playfair text-[16px] font-bold text-brown mb-2 leading-snug">{f.q}</p>
+                <p className="text-[13px] leading-[1.75] text-[rgba(107,76,42,0.75)]">{f.a}</p>
               </div>
             ))}
           </div>
@@ -218,7 +312,7 @@ function ResultsInner() {
             Your body has been <em className="italic text-gold block">waiting for this.</em>
           </h2>
           <p className="font-cormorant text-[19px] italic text-[rgba(245,238,216,0.5)] mb-8">You only need to say yes.</p>
-          <a href={COURSE_URL} className="inline-block w-full py-[17px] bg-gold text-brown rounded-xl font-jost text-[12px] font-semibold tracking-[0.2em] uppercase hover:opacity-88 transition-opacity">Begin My FBO Journey</a>
+          <a href={COURSE_URL} className="inline-block w-full py-[17px] bg-gold text-brown rounded-xl font-jost text-[12px] font-semibold tracking-[0.2em] uppercase hover:opacity-88 transition-opacity">Sign Up Now</a>
           <p className="mt-4 text-[11px] text-[rgba(245,238,216,0.22)]">30-day guarantee · Lifetime access · Cancel Sacred Circle anytime</p>
         </div>
       </section>
@@ -275,3 +369,4 @@ export default function Results() {
     </Suspense>
   )
 }
+
