@@ -5,10 +5,51 @@ import { Suspense } from 'react'
 import { MODULES, calcScores, getRecommendedIndex } from './quizData'
 
 const COURSE_URL = 'https://course.brockjohn.com/'
+const GUIDE_URL = 'https://beacons.ai/homwithbrockj'
 const SOCIAL_LINKS = [
-  { label: 'Instagram', href: 'https://www.instagram.com/valasomatic_reset/' },
-  { label: 'TikTok', href: 'https://www.tiktok.com/@vala_somaticreset' },
+  { label: 'Instagram', href: 'https://www.instagram.com/fbosomaticbody/' },
+  { label: 'TikTok', href: 'https://www.tiktok.com/@brock.bodywork?is_from_webapp=1&sender_device=pc' },
 ]
+
+// Three life-benefit lines per module, shown as highlighted boxes under the
+// recommended module card — tied to whichever module she's actually recommended.
+const BENEFITS: Record<string, string[]> = {
+  '01': [
+    'Fall asleep easier because your body finally feels safe to let go',
+    'Stop carrying the day\u2019s tension into your evenings',
+    'Feel calmer within minutes, not hours',
+  ],
+  '02': [
+    'Notice pleasure in ordinary moments, not only during practice',
+    'Quiet the inner critic that narrates instead of feels',
+    'Feel more present with a partner, without \u201ctrying\u201d',
+  ],
+  '03': [
+    'Access calm in seconds, anywhere, using only your breath',
+    'Break the pattern of holding your breath under stress',
+    'Feel more alive in your body throughout the day, not just at night',
+  ],
+  '04': [
+    'Recognize your own aliveness without needing anything to \u201chappen\u201d',
+    'Feel more in tune with your body\u2019s signals before you\u2019re overwhelmed',
+    'Reconnect with a sense of feminine vitality you thought was gone',
+  ],
+  '05': [
+    'Experience pleasure that doesn\u2019t fade the moment it starts',
+    'Feel sensation in your whole body, not only one place',
+    'Carry a sense of fullness and aliveness into your day',
+  ],
+  '06': [
+    'Stop the crash after pleasure \u2014 sustain the good feeling longer',
+    'Feel replenished by pleasure instead of depleted by life',
+    'Build a private practice that keeps giving back to you',
+  ],
+  '07': [
+    'Let good experiences actually stick, instead of evaporating',
+    'Feel your practice show up in daily life, not only in the moment',
+    'Build lasting change instead of chasing another peak',
+  ],
+}
 
 function ResultsInner() {
   const params = useSearchParams()
@@ -36,7 +77,7 @@ function ResultsInner() {
             Retake quiz
           </a>
           <a href={COURSE_URL} className="bg-brown text-cream px-5 py-2.5 rounded-lg text-[11px] tracking-[0.18em] uppercase font-medium hover:opacity-85 transition-opacity">
-            Sign Up Now
+            Learn More
           </a>
         </div>
       </nav>
@@ -65,17 +106,17 @@ function ResultsInner() {
         <div className="relative z-10 max-w-xl mx-auto">
           <div className="inline-flex items-center gap-2 bg-[rgba(201,169,110,0.1)] border border-[rgba(201,169,110,0.28)] px-4 py-2 rounded-full mb-6">
             <span className="text-gold text-[11px]">✦</span>
-            <span className="text-[10px] tracking-[0.25em] uppercase text-amber font-medium">Full Body Orgasmic · Level 1</span>
+            <span className="text-[10px] tracking-[0.25em] uppercase text-amber font-medium">Your Results Are In · Full Body Orgasmic</span>
           </div>
           <h1 className="font-playfair text-[clamp(34px,6vw,56px)] font-bold text-brown leading-[1.05] mb-5">
             Awaken Every<br /><em className="italic text-amber">Inch of Your Body.</em>
           </h1>
           <p className="font-cormorant text-[19px] italic text-amber leading-[1.6] mb-8 max-w-md mx-auto opacity-88">
-            The somatic program teaching women how to receive full-body orgasmic pleasure — starting from the inside out.
+            The body you have right now already knows how to feel this. This program simply removes what's been in the way.
           </p>
           <div className="flex flex-col items-center gap-3">
             <a href={COURSE_URL} className="w-full max-w-xs py-4 bg-brown text-cream rounded-xl font-jost text-[12px] font-medium tracking-[0.2em] uppercase hover:opacity-85 transition-opacity text-center block">
-              Sign Up Now
+              Learn More
             </a>
           </div>
         </div>
@@ -108,7 +149,7 @@ function ResultsInner() {
             Your Recommended <em className="italic text-amber">Starting Module</em>
           </h2>
           <p className="text-[14px] leading-[1.8] text-[rgba(107,76,42,0.7)] mb-8 max-w-md">
-            There's no wrong door into this work. Your answers simply point to where your body is asking to begin — the place where a little attention will open the most.
+            There's no wrong door into this work. Your answers just pointed straight to the place where your body is already asking to begin — and where a little attention will open the most.
           </p>
 
           {/* Hero recommendation card */}
@@ -128,6 +169,28 @@ function ResultsInner() {
               <p className="font-cormorant text-[17px] italic text-[rgba(245,238,216,0.75)] leading-[1.65] mb-4">{rec.desc}</p>
               <p className="text-[13px] leading-[1.8] text-[rgba(245,238,216,0.55)]">{rec.detail}</p>
             </div>
+          </div>
+
+          {/* What changes for her, specifically from this module */}
+          <p className="text-[10px] tracking-[0.22em] uppercase text-[rgba(107,76,42,0.4)] mb-3 font-medium">What This Module Changes</p>
+          <div className="flex flex-col gap-2.5 mb-6">
+            {(BENEFITS[rec.num] ?? []).map((b) => (
+              <div key={b} className="bg-[rgba(201,169,110,0.12)] border-[1.5px] border-gold rounded-xl px-5 py-4">
+                <p className="text-[14px] font-semibold leading-[1.5] text-brown">{b}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Return to Her teaser */}
+          <div className="bg-brown rounded-2xl p-5 mb-10 flex items-start gap-4">
+            <div className="w-9 h-9 rounded-lg bg-gold flex items-center justify-center flex-shrink-0 text-brown text-[15px] font-bold mt-0.5">
+              ✦
+            </div>
+            <p className="text-[13px] leading-[1.7] text-[rgba(245,238,216,0.8)]">
+              Once you begin, <span className="font-playfair italic text-cream">Return to Her</span> becomes your
+              private practice companion for {rec.title} — a guided space that adapts each night to exactly where
+              your body is, and evolves with you as you go.
+            </p>
           </div>
 
           {/* All modules with score bars */}
@@ -183,7 +246,7 @@ function ResultsInner() {
             })}
           </div>
           <a href={COURSE_URL} className="block w-full text-center py-4 bg-gold text-brown rounded-xl font-jost text-[12px] font-semibold tracking-[0.2em] uppercase hover:opacity-88 transition-opacity">
-            Sign Up Now
+            Learn More
           </a>
         </div>
       </section>
@@ -312,8 +375,16 @@ function ResultsInner() {
             Your body has been <em className="italic text-gold block">waiting for this.</em>
           </h2>
           <p className="font-cormorant text-[19px] italic text-[rgba(245,238,216,0.5)] mb-8">You only need to say yes.</p>
-          <a href={COURSE_URL} className="inline-block w-full py-[17px] bg-gold text-brown rounded-xl font-jost text-[12px] font-semibold tracking-[0.2em] uppercase hover:opacity-88 transition-opacity">Sign Up Now</a>
+          <a href={COURSE_URL} className="inline-block w-full py-[17px] bg-gold text-brown rounded-xl font-jost text-[12px] font-semibold tracking-[0.2em] uppercase hover:opacity-88 transition-opacity">Learn More</a>
           <p className="mt-4 text-[11px] text-[rgba(245,238,216,0.22)]">30-day guarantee · Lifetime access · Cancel Sacred Circle anytime</p>
+          <a
+            href={GUIDE_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-block mt-8 text-[11px] tracking-[0.14em] uppercase text-[rgba(201,169,110,0.75)] underline hover:text-gold transition-colors"
+          >
+            Not ready yet? Read the Free Orgasm Guide →
+          </a>
         </div>
       </section>
 
@@ -342,11 +413,6 @@ function ResultsInner() {
                 <a href="tel:346-219-1603" className="hover:text-[rgba(245,238,216,0.5)] transition-colors">346-219-1603</a>
                 <a href="mailto:homewithbrockjohn@gmail.com" className="hover:text-[rgba(245,238,216,0.5)] transition-colors">homewithbrockjohn@gmail.com</a>
               </div>
-            </div>
-            <div className="flex gap-5">
-              {['Privacy','Terms','Contact'].map(l => (
-                <a key={l} href="#" className="text-[11px] tracking-[0.1em] uppercase text-[rgba(245,238,216,0.2)] hover:text-[rgba(245,238,216,0.45)] transition-colors">{l}</a>
-              ))}
             </div>
           </div>
         </div>
