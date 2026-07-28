@@ -4,7 +4,7 @@ import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 import { MODULES, calcScores, getRecommendedIndex } from './quizData'
 
-const COURSE_URL = 'https://course.brockjohn.com/'
+const COURSE_URL = 'https://fbo.brockjohn.com/'
 const GUIDE_URL = 'https://beacons.ai/homwithbrockj'
 const SOCIAL_LINKS = [
   { label: 'Instagram', href: 'https://www.instagram.com/fbosomaticbody/' },
